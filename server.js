@@ -45,7 +45,7 @@ let lastUpdate = {};
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
+  console.log('🔌 Client connected:', socket.id);
 
   // Send initial state to new connections
   socket.emit('initialState', {
@@ -202,6 +202,18 @@ io.on('connection', (socket) => {
 
     // Clean up rate limiting data
     delete lastUpdate[socket.id];
+  });
+
+  socket.on('update', (data) => {
+    if (Math.random() < 0.01) { // Log only 1% of updates to avoid console spam
+      console.log('📊 Active players:', {
+        total: players.size,
+        positions: Array.from(players.values()).map(p => ({
+          id: p.id,
+          pos: { x: p.position.x, y: p.position.y, z: p.position.z }
+        }))
+      });
+    }
   });
 });
 
