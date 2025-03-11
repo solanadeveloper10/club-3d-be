@@ -53,7 +53,10 @@ io.on('connection', (socket) => {
     players: Array.from(players.values())
   });
 
-  // Handle username setting
+  // Make sure this is sent immediately on connection
+  socket.emit('setId', { id: socket.id });
+
+  // Then handle username setting
   socket.on('set username', (username) => {
     players.set(socket.id, {
       id: socket.id,
