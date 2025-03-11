@@ -168,10 +168,14 @@ io.on('connection', (socket) => {
 
   // Handle chat messages
   socket.on('chat message', (data) => {
+    // Check if data is an object with message property
+    const messageText = data.message || data;
+    const username = players.get(socket.id)?.username || 'Unknown';
+
     io.emit('chat message', {
       id: socket.id,
-      username: players.get(socket.id)?.username,
-      message: data
+      name: username,  // Changed from username to name to match frontend
+      message: messageText
     });
   });
 
